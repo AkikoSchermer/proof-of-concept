@@ -26,7 +26,7 @@ app.get("/mensen-pagina", async (req, res) => {
         },
       }),
       fetch("https://fdnd.directus.app/items/messages?filter[text][_eq]=like"),
-      fetch("https://fdnd.directus.app/items/messages"),
+      // fetch("https://fdnd.directus.app/items/messages"),
       fetch("https://fdnd.directus.app/items/messages?filter[from][_eq]=Akikko"),
     ]);
 
@@ -55,6 +55,9 @@ console.log("Voorbeelden van from:", allMessages.slice(0, 10).map(m => m.from));
 const myUser = peopleData.filter(person => {
   return person.name.trim().toLowerCase() === myUserName.toLowerCase();
 });
+// const myUser = peopleData.find(person => person.name.trim().toLowerCase() === myUserName.toLowerCase());
+// const myUser = peopleData.find(person => person.name.trim().toLowerCase() === myUserName.toLowerCase());
+
 
 const users = peopleData.map(person => person.name);
 console.log(users);
@@ -95,7 +98,7 @@ console.log('Berichten van Akikko:', myMessages);
         // console.log(allTags); 
       });
     });
-    
+
 
     const tags = peopleData.map(data => data.tags);
 
@@ -127,8 +130,8 @@ console.log('Berichten van Akikko:', myMessages);
 
 app.post('/mensen-pagina' , async (req, res) =>  {
   // const userId = 3;
-  const { for: forUser, from, text } = req.body;
-  // const { from, text, for: forUser } = req.body; 
+  // const { for: forUser, from, text } = req.body;
+  const { from, text, for: forUser } = req.body; 
 
   // Ik haal de data uit het formulier met request body
   // console.log(req.body)
@@ -143,9 +146,7 @@ app.post('/mensen-pagina' , async (req, res) =>  {
    'Content-Type':  'application/json',
    },
    body: JSON.stringify ({ 
-    for: forUser,
-    from: from,
-    text: text,
+    from: 'Akikko', text, for: forUser 
   }),
     // for: recipient, text, for: forUser  
  });
