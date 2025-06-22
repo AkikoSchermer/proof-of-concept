@@ -239,6 +239,14 @@ ul li.users {
     display: inline;
 }
 
+.message {
+    background: pink;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 300px;
+}
+
 .message-form {
     display: flex;
     flex-direction: column;
@@ -261,6 +269,7 @@ ul li.users {
 
 .bericht {
     font-size: large;
+    
     /* display: none; */
 }
 
@@ -409,12 +418,14 @@ img.right-arrow {
 .links a {
     text-decoration: none;
     color: var(--Q42-green);
+    list-style-type: none;
 }
 
 .link {
     text-decoration: none;
     color: var(--Q42-green);
 }
+
 
 .social-media {
     display: none;
@@ -440,6 +451,7 @@ img.right-arrow {
 
 .ons-werk {
     grid-area: onswerk;
+    list-style-type: none;
 }
 
 .contact-info {
