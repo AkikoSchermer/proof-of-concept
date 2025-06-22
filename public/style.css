@@ -266,6 +266,22 @@ ul li.users {
     fill: #e0245e;
   } */
 
+button.submit-btn:hover {
+    background-color: var(--Q42-green) !important;
+}
+
+button.submit-btn {
+    background-color: var(--Q42-green);
+}
+
+/* button.tag-btn {
+    background-color: var(--Q42-green);
+} */
+
+button.tag-btn:hover {
+    background-color: var(--Q42-green);
+}
+
 
 .message-list {
    list-style-type: none;
@@ -283,11 +299,6 @@ ul li.users {
     border:none;
 }
 
-.bericht {
-    font-size: large;
-    
-    /* display: none; */
-}
 
 .vacature {
     display: flex;
