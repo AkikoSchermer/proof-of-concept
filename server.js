@@ -97,26 +97,22 @@ console.log('Berichten van Akikko:', myMessages);
     });
     
 
- 
+    const tags = peopleData.map(data => data.tags);
+
+    const uniqueTags = [...new Set(tags.flat())];
+    
+
     peopleData.forEach(user => {
       user.messages = allMessages.filter(m => m.for === user.name);
       user.myMessages = user.messages.filter(m => m.from === myUserName);
       user.otherMessages = user.messages.filter(m => m.from !== myUserName);
     });
 
-// const myMessages = allMessages.filter(msg => msg.from === myUserId);
-// console.log('Alle from waardes in messages:', allMessages.map(m => m.from));
-// peopleData.forEach(user => {
-//   console.log('gebruiker' + user.name);
-//   user.messages = allMessages.filter(m => m.for === user.name && m.from === 'Akikko');
-  
-//   console.log(user.messages);
-// });
-
 
     res.render("mensen-pagina", { 
       users: peopleData, 
       likes: likesData.data,
+      tags: uniqueTags, 
       // messages: messagesData.data,
       messages: myMessages,
       myUser: myUser[0]
