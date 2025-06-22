@@ -57,24 +57,46 @@
             action="/like/{{ user.id }}"
             class="like-form">
             <button type="submit" class="like-btn">
-              {% comment %} <img
-                                src="/assets/HeartEmpty.svg"
-                                class="like"
-                              alt="Like" /> {% endcomment %}
+              <img
+                src="/assets/HeartEmpty.svg"
+                class="like"
+                alt="Like" />
             </button>
           </form>
         {% endif %}
+        <h3>Berichten van {{ myUser }}</h3>
+        {% if user.myMessages and user.myMessages.length > 0 %}
+          <ul class="mess">
+            {% for message in user.myMessages %}
+              <li>{{ message.text }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Je hebt nog geen berichten naar {{ user.name }} gestuurd.</p>
+        {% endif %}
 
-
-        {% if user.messages and user.messages.length > 0 %}
-          <ul class="message">
-            {% for message in user.messages %}
+        <h3>Berichten van anderen</h3>
+        {% if user.otherMessages and user.otherMessages.size > 0 %}
+          <ul>
+            {% for message in user.otherMessages %}
               <li>{{ message.text }} (van: {{ message.from }})</li>
             {% endfor %}
           </ul>
         {% else %}
-          <p>Geen berichten voor deze persoon.</p>
+          <p>Geen andere reacties.</p>
         {% endif %}
+
+
+        {% comment %} {% if user.messages and user.messages.length > 0 %}
+                                                                                                              <ul class="message">
+                                                                                                                {% for message in user.messages %}
+                                                                                                                  <li>{{ message.text }} (van: {{ message.from }})</li>
+                                                                                                                {% endfor %}
+                                                                                                              </ul>
+                                                                                                            {% else %}
+                                                                                                              <p>Geen berichten voor deze persoon.</p>
+                                                                                        {% endif %} {% endcomment %}
+
 
         <form
           method="POST"
@@ -97,33 +119,33 @@
         </form>
 
       {% comment %} 
-                                                                                                                                                                <form
-                                                                                                                                                                  method="POST"
-                                                                                                                                                                  action="/mensen-pagina"
-                                                                                                                                                                  class="message-form">
-                                                                                                                                                                  <input
-                                                                                                                                                                    type="hidden"
-                                                                                                                                                                    name="for"
-                                                                                                                                                                    value="{{ user.id }}">
-                                                                                                                                                                  <label for="from">Naam:</label>
-                                                                                                                                                                  <input
-                                                                                                                                                                    type="text"
-                                                                                                                                                                    id="from"
-                                                                                                                                                                    name="from"
-                                                                                                                                                                    required>
+                                                                                                                                                                                                                                                <form
+                                                                                                                                                                                                                                                  method="POST"
+                                                                                                                                                                                                                                                  action="/mensen-pagina"
+                                                                                                                                                                                                                                                  class="message-form">
+                                                                                                                                                                                                                                                  <input
+                                                                                                                                                                                                                                                    type="hidden"
+                                                                                                                                                                                                                                                    name="for"
+                                                                                                                                                                                                                                                    value="{{ user.id }}">
+                                                                                                                                                                                                                                                  <label for="from">Naam:</label>
+                                                                                                                                                                                                                                                  <input
+                                                                                                                                                                                                                                                    type="text"
+                                                                                                                                                                                                                                                    id="from"
+                                                                                                                                                                                                                                                    name="from"
+                                                                                                                                                                                                                                                    required>
 
-                                                                                                                                                                  <label for="text">Reactie:</label>
-                                                                                                                                                                  <input
-                                                                                                                                                                    type="text"
-                                                                                                                                                                    id="text"
-                                                                                                                                                                    name="text"
-                                                                                                                                                                    required>
+                                                                                                                                                                                                                                                  <label for="text">Reactie:</label>
+                                                                                                                                                                                                                                                  <input
+                                                                                                                                                                                                                                                    type="text"
+                                                                                                                                                                                                                                                    id="text"
+                                                                                                                                                                                                                                                    name="text"
+                                                                                                                                                                                                                                                    required>
 
-                                                                                                                                                                  <button type="submit">verzenden</button>
-                                                                                                                                                                </form>
+                                                                                                                                                                                                                                                  <button type="submit">verzenden</button>
+                                                                                                                                                                                                                                                </form>
 
 
-                                                                             {% endcomment %}
+                                                                                                                                         {% endcomment %}
 
       </li>
     {% endfor %}

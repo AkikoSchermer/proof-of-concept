@@ -25,8 +25,9 @@ app.get("/mensen-pagina", async (req, res) => {
           "X-API-Key": `${process.env.API_KEY}`,
         },
       }),
-      fetch("https://fdnd.directus.app/items/messages?filter[text][_eq]=like"),
+
       fetch("https://fdnd.directus.app/items/messages"),
+      fetch("https://fdnd.directus.app/items/messages?filter[from][_eq]=Akikko"),
     ]);
 
     const likesData = await likesResponse.json();
@@ -36,6 +37,8 @@ app.get("/mensen-pagina", async (req, res) => {
     const peopleData = await peopleResponse.json();
     console.log(peopleData);
     const allMessages = messagesData.data;
+
+    console.log('alle berichten' + JSON.stringify(allMessages))
 
     const myUserName = 'Akikko'; // jouw naam als afzender
     
@@ -63,20 +66,6 @@ console.log('Gebruiker gevonden:', myUser);
 console.log('Berichten van Akikko:', myMessages);
 
 
-    // Log alle 'from' waardes om te zien wat er in zit
-    // console.log('Alle from waardes:', allMessages.map(m => m.from));
-
-    // Robuuste filter voor user-3 berichten
-    // const myUserId = 'user-3';
-    // const myMessages = allMessages.filter(msg => {
-    //   if (!msg.from) return false;
-    //   return msg.from.trim() === myUserId;
-    // });
-
-    // console.log('Gefilterde berichten van user-3:', myMessages);
-
-    // console.log("Alle 'from' waarden in messages:", messagesData.data.map(m => m.from));
-
     const userId = 3; 
 
     const myLikes = likesData.data.filter(like => like.from === `user-${userId}`);
@@ -85,29 +74,16 @@ console.log('Berichten van Akikko:', myMessages);
     const likedUserIds = myLikes.map(like => {
       return like.for.split("-").pop();
 
-
     });
 
     const uniqueLikedUserIds = [...new Set(likedUserIds)];
     // console.log("uniqueLikedUserIds (zonder dubbele):", uniqueLikedUserIds);
 
 
-
     peopleData.forEach(user => {
       user.isLiked = uniqueLikedUserIds.includes(String(user.id));
       // console.log(`User ${user.id} (${user.name}) liked?`, user.isLiked);
     });
-
-
-
-    // console.log(peopleData[0].tags[0]);
-    // ik haal de eerst persoon op en de tag die daarbij hoort
-
-    // console.log(peopleData);
-
-    // eerst haal ik alle users op door foreach te gebruiken 
-    // en dan doe ik dit ook bij de users.tags zodat ik alle tags kan ophalen
-    // en dan kan ik de tags uitlezen
 
     const allTags = []; 
     // maak een lege array of lege lijst
@@ -119,34 +95,23 @@ console.log('Berichten van Akikko:', myMessages);
         // console.log(allTags); 
       });
     });
+    
 
-    // const allMessages = messagesData.data;
-
-    // const myUserName = 'Akikooo';
-
-// const myMessages = allMessages.filter(msg => msg.from === myUserName);
-
-    // const allMessages = messagesData.data.filter(msg => msg.text !== "like");
-
-    // const newMessages = messagesData.data.filter(msg => msg.text !== 'like');
-
-    // const myMessages = allMessages.filter(msg => msg.from === `user-${userId}`);
-
-//     const allMessages = messagesData.data;
-//     const myUserId = 'user-3'; // vaste user ID
-
-//     const myMessages = allMessages.filter(msg => msg.from && msg.from.includes('3'));
-// console.log('Gefilterde berichten:', myMessages);
-
+ 
+    peopleData.forEach(user => {
+      user.messages = allMessages.filter(m => m.for === user.name);
+      user.myMessages = user.messages.filter(m => m.from === myUserName);
+      user.otherMessages = user.messages.filter(m => m.from !== myUserName);
+    });
 
 // const myMessages = allMessages.filter(msg => msg.from === myUserId);
 // console.log('Alle from waardes in messages:', allMessages.map(m => m.from));
-peopleData.forEach(user => {
-  console.log('gebruiker' + user.name);
-  user.messages = allMessages.filter(m => m.for === user.name && m.from === 'Akikko');
+// peopleData.forEach(user => {
+//   console.log('gebruiker' + user.name);
+//   user.messages = allMessages.filter(m => m.for === user.name && m.from === 'Akikko');
   
-  console.log(user.messages);
-});
+//   console.log(user.messages);
+// });
 
 
     res.render("mensen-pagina", { 
@@ -154,7 +119,7 @@ peopleData.forEach(user => {
       likes: likesData.data,
       // messages: messagesData.data,
       messages: myMessages,
-      myUser: myUser
+      myUser: myUser[0]
     });
       // console.log(messagesData)
 
@@ -166,7 +131,9 @@ peopleData.forEach(user => {
 
 app.post('/mensen-pagina' , async (req, res) =>  {
   // const userId = 3;
-  const { from, text, for: forUser } = req.body; 
+  const { for: forUser, from, text } = req.body;
+  // const { from, text, for: forUser } = req.body; 
+
   // Ik haal de data uit het formulier met request body
   // console.log(req.body)
   console.log('Request body:', req.body);
@@ -179,7 +146,12 @@ app.post('/mensen-pagina' , async (req, res) =>  {
    headers: {
    'Content-Type':  'application/json',
    },
-   body: JSON.stringify ({ from: 'Akikko', text, for: forUser  }),
+   body: JSON.stringify ({ 
+    for: forUser,
+    from: from,
+    text: text,
+  }),
+    // for: recipient, text, for: forUser  
  });
 
 const newMessage = await response.json();
