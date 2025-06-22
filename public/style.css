@@ -256,6 +256,17 @@ ul li.users {
     /* display: none; */
 } 
 
+/* .heart-icon {
+    fill: none;
+    stroke: #e0245e;
+    transition: all 0.2s ease;
+  }
+  
+  .heart-icon.liked {
+    fill: #e0245e;
+  } */
+
+
 .message-list {
    list-style-type: none;
 }
@@ -265,6 +276,7 @@ ul li.users {
 }
 
 .like-btn {
+    background-color: transparent;
     position: absolute;
     top: 5px;
     right: 0;

@@ -25,7 +25,7 @@ app.get("/mensen-pagina", async (req, res) => {
           "X-API-Key": `${process.env.API_KEY}`,
         },
       }),
-
+      fetch("https://fdnd.directus.app/items/messages?filter[text][_eq]=like"),
       fetch("https://fdnd.directus.app/items/messages"),
       fetch("https://fdnd.directus.app/items/messages?filter[from][_eq]=Akikko"),
     ]);
